@@ -1,0 +1,20 @@
+{
+  "name": "medicare_api",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "gcloud app deploy",
+    "open": "gcloud app browse",
+    "log": "gcloud app logs tail -s default"
+  },
+  "engines": {
+    "node": "10"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.1.6"
+  },
+  "private": true
+}
