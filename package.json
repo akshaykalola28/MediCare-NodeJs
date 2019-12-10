@@ -1,6 +1,6 @@
 {
   "name": "medicare_api",
-  "description": "Cloud Functions for Firebase",
+  "description": "API for the MediCare",
   "scripts": {
     "start": "node index.js",
     "deploy": "gcloud app deploy",
