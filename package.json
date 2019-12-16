@@ -11,7 +11,9 @@
     "node": "10"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "@google-cloud/storage": "^4.1.3",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.8.0"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.1.6"
