@@ -1,5 +1,5 @@
 const { response } = require("./../../../response");
-const { auth, firestore } = require("./../../dbconnection");
+const { auth, firestore, firebaseAuth } = require("./../../dbconnection");
 const { imageUpload } = require("./../../imageUpload");
 
 let postRegisterHandler = async (req, res, next) => {
@@ -60,7 +60,7 @@ let postRegisterHandler = async (req, res, next) => {
                     userRef.set(data).then(() => {
                         auth.createUser({
                             email: req.body.email,
-                            phoneNumber: req.body.phoneNumber,
+                            phoneNumber: '+91' + req.body.phoneNumber,
                             password: req.body.password,
                             displayName: req.body.displayName
                         }).then(() => {
@@ -84,4 +84,19 @@ let postRegisterHandler = async (req, res, next) => {
     });
 };
 
+let postLoginHandler = async (req, res, next) => {
+
+    var email = req.body.email.trim();
+    var password = req.body.password.trim();
+    var notificationToken = null;
+
+    firebaseAuth.signInWithEmailAndPassword(email, password).then((record) => {
+        //console.log("Token: " + record.user.getIdToken);
+        res.json(response(true, true, "Login Successfull"));
+    }).catch((error) => {
+        res.json(response(false, false, error));
+    });
+};
+
 module.exports.postRegisterHandler = postRegisterHandler;
+module.exports.postLoginHandler = postLoginHandler;
