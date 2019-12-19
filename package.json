@@ -16,7 +16,7 @@
     "firebase-admin": "^8.8.0"
   },
   "devDependencies": {
-    "firebase-functions-test": "^0.1.6"
+    "nodemon": "^2.0.2"
   },
   "private": true
 }
