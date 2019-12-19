@@ -1,12 +1,11 @@
 const { response } = require("./../../../response");
-const { auth, firestore } = require("./../../dbconnection");
+const { auth, firestore, firebaseAuth } = require("./../../dbconnection");
 const { imageUpload } = require("./../../imageUpload");
 
 let postRegisterHandler = async (req, res, next) => {
 
     var base64str = null;
     let data = {
-        uid: null,
         firstName: req.body.firstName.trim(),
         lastName: req.body.lastName.trim(),
         email: req.body.email.trim(),
@@ -27,61 +26,59 @@ let postRegisterHandler = async (req, res, next) => {
     var imageName = data.user_type + data.phoneNumber;
     var fileNameToStore = `${data.user_type}/${imageName}.jpeg`;
     var userExists;
-    await ref.where('phoneNumber', '==', data.phoneNumber).get().then(snapshot => {
-        userExists = snapshot.size;
-        if (userExists && userExists > 0) {
-            res.json(response(true, true, "ER_DUP_ENTRY"));
-        } else {
-            if (base64str == null || base64str == "") {
-                data['imageURL'] = null;
-                let userRef = firestore.collection(data.user_type).doc(data.phoneNumber);
-                userRef.set(data).then(() => {
-                    auth.createUser({
-                        email: req.body.email,
-                        phoneNumber: '+91' + req.body.phoneNumber,
-                        password: req.body.password,
-                        displayName: req.body.displayName
-                    }).then((userRecord) => {
-                        var uid = userRecord.uid;
-                        userRef.update('uid', uid).then(() => {
-                            res.json(response(true, true, "Register Successfully"));
-                        }).catch(() => {
-                            res.json(response(false, false, "uid not updated."));
+    await auth.createUser({
+        email: req.body.email,
+        phoneNumber: '+91' + req.body.phoneNumber,
+        password: req.body.password,
+        displayName: req.body.displayName
+    }).then(async (userRecord) => {
+        var uid = userRecord.uid;
+        data['uid'] = uid;
+        await ref.where('uid', '==', uid).get().then(snapshot => {
+            userExists = snapshot.size;
+            if (userExists && userExists > 0) {
+                res.json(response(true, true, "ER_DUP_ENTRY"));
+            } else {
+                if (base64str == null || base64str == "") {
+                    data['imageURL'] = null;
+                    let userRef = firestore.collection(data.user_type).doc(uid);
+                    userRef.set(data).then(() => {
+                        res.json(response(true, true, "Register Successfully."));
+                    });
+                } else {
+                    var imageURL = imageUpload(fileNameToStore, base64str);
+                    imageURL.then(url => {
+                        data['imageURL'] = url;
+                        let userRef = firestore.collection(data.user_type).doc(uid);
+                        userRef.set(data).then(() => {
+                            res.json(response(true, true, "Register Successfully."));
                         });
-                    }).catch((error) => {
+                    }).catch(error => {
                         res.json(response(false, false, error));
                     });
-                });
-            } else {
-                var imageURL = imageUpload(fileNameToStore, base64str);
-                imageURL.then(url => {
-                    data['imageURL'] = url;
-                    let userRef = firestore.collection(data.user_type).doc(data.phoneNumber);
-                    userRef.set(data).then(() => {
-                        auth.createUser({
-                            email: req.body.email,
-                            phoneNumber: req.body.phoneNumber,
-                            password: req.body.password,
-                            displayName: req.body.displayName
-                        }).then(() => {
-                            var uid = userRecord.uid;
-                            userRef.update('uid', uid).then(() => {
-                                res.json(response(true, true, "Register Successfully"));
-                            }).catch(() => {
-                                res.json(response(false, false, "uid not updated."));
-                            });
-                        }).catch((error) => {
-                            res.json(response(false, false, error));
-                        });
-                    });
-                }).catch(error => {
-                    res.json(response(false, false, error));
-                });
+                }
             }
-        }
-    }).catch(error => {
-        res.json(false, false, error);
+        }).catch(error => {
+            res.json(false, false, error);
+        });
+    }).catch((error) => {
+        res.json(response(false, false, error));
+    });
+};
+
+let postLoginHandler = async (req, res, next) => {
+
+    var email = req.body.email.trim();
+    var password = req.body.password.trim();
+    var notificationToken = null;
+
+    firebaseAuth.signInWithEmailAndPassword(email, password).then((record) => {
+        //console.log("Token: " + record.user.getIdToken);
+        res.json(response(true, true, "Login Successfull"));
+    }).catch((error) => {
+        res.json(response(false, false, error));
     });
 };
 
 module.exports.postRegisterHandler = postRegisterHandler;
+module.exports.postLoginHandler = postLoginHandler;
