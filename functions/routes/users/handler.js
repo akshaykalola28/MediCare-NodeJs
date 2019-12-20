@@ -10,13 +10,13 @@ let postRegisterHandler = async (req, res, next) => {
         lastName: req.body.lastName.trim(),
         email: req.body.email.trim(),
         phoneNumber: req.body.phoneNumber + "".trim(),
-        password: req.body.password.trim(),
-        displayName: req.body.displayName.trim(),
+        password: req.body.password,
+        displayName: req.body.displayName,
         user_type: req.body.user_type.trim(),
         token: null,
         address: [
             {
-                address: req.body.address.trim(),
+                address: req.body.address,
                 pincode: req.body.pincode.trim()
             }
         ]
@@ -68,13 +68,42 @@ let postRegisterHandler = async (req, res, next) => {
 
 let postLoginHandler = async (req, res, next) => {
 
-    var email = req.body.email.trim();
-    var password = req.body.password.trim();
+    var email = req.body.email;
+    var password = req.body.password;
     var notificationToken = null;
 
     firebaseAuth.signInWithEmailAndPassword(email, password).then((record) => {
-        //console.log("Token: " + record.user.getIdToken);
+        console.log("Token: " + record.user.displayName);
         res.json(response(true, true, "Login Successfull"));
+    }).catch((error) => {
+        res.json(response(false, false, error));
+    });
+};
+
+let postDeleteUserHandler = async (req, res, next) => {
+
+    var email = req.body.email;
+    var ref = firestore.collection(req.body.user_type);
+    //Verify IdToken for deleting the user
+    var idToken = req.body.idToken;
+    auth.verifyIdToken(idToken).then((decodedToken) => {
+        var uid = decodedToken.uid;
+        console.log("Uid: " + uid);
+        res.json(response(true, true, "Token is Verified."));
+        /*auth.getUserByEmail(email).then((userRecord) => {
+            var uid = userRecord.uid;
+            auth.deleteUser(uid).then(() => {
+                ref.doc(uid).delete().then(() => {
+                    res.json(response(true, true, "Delete User Succesfully."));
+                }).catch((error) => {
+                    res.json(response(false, false, error));
+                });
+            }).catch((error) => {
+                res.json(response(false, false, error));
+            });
+        }).catch((error) => {
+            res.json(response(false, false, error));
+        });*/
     }).catch((error) => {
         res.json(response(false, false, error));
     });
@@ -82,3 +111,4 @@ let postLoginHandler = async (req, res, next) => {
 
 module.exports.postRegisterHandler = postRegisterHandler;
 module.exports.postLoginHandler = postLoginHandler;
+module.exports.postDeleteUserHandler = postDeleteUserHandler;
