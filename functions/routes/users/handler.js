@@ -6,18 +6,18 @@ let postRegisterHandler = async (req, res, next) => {
 
     var base64str = null;
     let data = {
-        firstName: req.body.firstName.trim(),
-        lastName: req.body.lastName.trim(),
-        email: req.body.email.trim(),
-        phoneNumber: req.body.phoneNumber + "".trim(),
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber + "",
         password: req.body.password,
         displayName: req.body.displayName,
-        user_type: req.body.user_type.trim(),
+        user_type: req.body.user_type,
         token: null,
         address: [
             {
                 address: req.body.address,
-                pincode: req.body.pincode.trim()
+                pincode: req.body.pincode
             }
         ]
     };
@@ -62,7 +62,8 @@ let postRegisterHandler = async (req, res, next) => {
             res.json(false, false, error);
         });
     }).catch((error) => {
-        res.json(response(false, false, error));
+        console.log(error);
+        res.json(response(false, false, "Email or Phone Number already exists."));
     });
 };
 
