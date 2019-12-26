@@ -59,7 +59,7 @@ let postRegisterHandler = async (req, res, next) => {
                 }
             }
         }).catch(error => {
-            res.json(false, false, error);
+            res.json(response(false, false, error));
         });
     }).catch((error) => {
         console.log(error);
@@ -75,7 +75,7 @@ let postLoginHandler = async (req, res, next) => {
 
     firebaseAuth.signInWithEmailAndPassword(email, password).then((record) => {
         console.log("Token: " + record.user.displayName);
-        res.json(response(true, true, "Login Successfull"));
+        res.json(response(true, true, "Login Successfully."));
     }).catch((error) => {
         res.json(response(false, false, error));
     });
