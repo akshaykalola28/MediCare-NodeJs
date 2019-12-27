@@ -1,8 +1,7 @@
-let response = (auth, responseSuccess, data) => {
+let response = (status, message) => {
     return {
-        auth: auth,
-        responseSuccess: responseSuccess,
-        data: data
+        status: status,
+        message: message
     }
 };
 
