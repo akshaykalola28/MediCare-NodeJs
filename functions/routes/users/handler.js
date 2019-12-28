@@ -31,14 +31,14 @@ let postRegisterHandler = async (req, res, next) => {
         await ref.where('uid', '==', uid).get().then(snapshot => {
             userExists = snapshot.size;
             if (userExists && userExists > 0) {
-                res.json(response(409, "ER_DUP_ENTRY"));
+                res.status(409).json(response(409, "ER_DUP_ENTRY"));
             } else {
                 if (base64str == null || base64str == "") {
                     data['imageURL'] = null;
                     let userRef = firestore.collection('users').doc(uid);
                     userRef.set(data).then(() => {
                         //res.send("Register Successfully.");
-                        res.json(response(200, "Register Successfully."));
+                        res.status(200).json(response(200, "Register Successfully."));
                     });
                 } else {
                     var imageURL = imageUpload(fileNameToStore, base64str);
@@ -54,11 +54,11 @@ let postRegisterHandler = async (req, res, next) => {
                 }
             }
         }).catch(error => {
-            res.json(400, error);
+            res.status(400).json(response(400, error));
         });
     }).catch((error) => {
         console.log(error);
-        res.json(response(409, "Email or Phone Number already exists."));
+        res.status(409).json(response(409, "Email or Phone Number already exists."));
     });
 };
 
@@ -74,15 +74,15 @@ let postLoginHandler = async (req, res, next) => {
         var id = record.user.uid;
         ref.where('uid', '==', id).get().then(snapshot => {
             snapshot.forEach(doc => {
-                res.send(doc.data());
+                res.status(200).json(doc.data());
             });
         }).catch((error) => {
             console.log(error);
-            res.json(response(402, error));
+            res.status(401).json(response(401, error));
         });
         //res.json(response(200, "Login Successfull"));
     }).catch((error) => {
-        res.json(response(401, error));
+        res.status(401).json(response(401, error));
     });
 };
 
