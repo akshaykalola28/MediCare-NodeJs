@@ -135,9 +135,9 @@ let postForgotPasswordHandler = (req, res, next) => {
     var email = req.body.email;
     auth.generatePasswordResetLink(email).then((result) => {
         var url = result;
-        res.status(200).json(200, url);
+        res.status(200).json(response(200, url));
     }).catch((error) => {
-        res.status(401).json(401, error);
+        res.status(401).json(response(401, error));
     });
 };
 
