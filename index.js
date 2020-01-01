@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/demo', (req, res) => {
-	res.send('I updated automatically.');
+	res.send('I updated.');
 });
 
 app.use('/user', userRoute);
