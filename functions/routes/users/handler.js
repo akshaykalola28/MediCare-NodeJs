@@ -69,18 +69,33 @@ let postLoginHandler = async (req, res, next) => {
     var notificationToken = null;
     var ref = firestore.collection('users');
 
-    firebaseAuth.signInWithEmailAndPassword(email, password).then((record) => {
-        console.log("Token: " + record.user.uid);
-        var id = record.user.uid;
-        ref.where('uid', '==', id).get().then(snapshot => {
-            snapshot.forEach(doc => {
-                res.status(200).json(doc.data());
+    firebaseAuth.signInWithEmailAndPassword(email, password).then(async (record) => {
+        //var tokenTime = record.user.getIdTokenResult(false);
+        //Code for getting the access token from firebase auth...
+        record.user.getIdToken(false).then(async (result) => {
+            var idToken = result;
+            var id = record.user.uid;
+            ref.where('uid', '==', id).get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    var data = doc.data();
+                    data['token'] = idToken;
+                    res.status(200).json(data);
+                });
+            }).catch((error) => {
+                console.log(error);
+                res.status(401).json(response(401, error));
             });
-        }).catch((error) => {
-            console.log(error);
-            res.status(401).json(response(401, error));
         });
-        //res.json(response(200, "Login Successfull"));
+    }).catch((error) => {
+        res.status(401).json(response(401, error));
+    });
+};
+
+let postRefreshTokenHandler = (req, res, next) => {
+
+    firebaseAuth.currentUser.getIdToken(/*forceReresh */ true).then((idToken) => {
+        var token = idToken;
+        res.status(200).json(token);
     }).catch((error) => {
         res.status(401).json(response(401, error));
     });
@@ -95,7 +110,7 @@ let postDeleteUserHandler = async (req, res, next) => {
     auth.verifyIdToken(idToken).then((decodedToken) => {
         var uid = decodedToken.uid;
         console.log("Uid: " + uid);
-        res.json(response(200, "Token is Verified."));
+        res.json(response(200, "Token is Verified. And EmailID: " + decodedToken.firebase.identities.email));
         /*auth.getUserByEmail(email).then((userRecord) => {
             var uid = userRecord.uid;
             auth.deleteUser(uid).then(() => {
@@ -118,3 +133,4 @@ let postDeleteUserHandler = async (req, res, next) => {
 module.exports.postRegisterHandler = postRegisterHandler;
 module.exports.postLoginHandler = postLoginHandler;
 module.exports.postDeleteUserHandler = postDeleteUserHandler;
+module.exports.postRefreshTokenHandler = postRefreshTokenHandler;
