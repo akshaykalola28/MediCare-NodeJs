@@ -84,15 +84,15 @@ let postDeleteUserHandler = async (req, res, next) => {
         var uid = userRecord.uid;
         auth.deleteUser(uid).then(() => {
             ref.doc(uid).delete().then(() => {
-                res.json(response(true, true, "Delete User Succesfully."));
+                res.status(200).json(response(200, "Delete User Succesfully."));
             }).catch((error) => {
-                res.json(response(false, false, error));
+                res.status(401).json(response(401, error));
             });
         }).catch((error) => {
-            res.json(response(false, false, error));
+            res.status(401).json(response(401, error));
         });
     }).catch((error) => {
-        res.json(response(false, false, error));
+        res.status(401).json(response(401, error));
     });
 };
 
