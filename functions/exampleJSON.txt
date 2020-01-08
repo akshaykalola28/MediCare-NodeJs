@@ -1,0 +1,23 @@
+var medicinesData = { //For Adding Report
+    patientid: "",
+    doctorId: "",
+    reportDescription: "X-ray of Chest, Diabetes Report",
+    laboratoryEmail: "",
+    medicalStoreEmail: null,
+    collectingStatus: "pending or done"
+};
+
+var medicinesData = { //For Adding medicines
+    patientid: "",
+    doctorId: "",
+    medicineName: "1011 After or Before eating" OR follow below
+    "medicineName": [
+        {
+            "howManyTimetoTake": 1011,
+            "whenToTake": "After or Before eating"
+        }
+    ],
+    laboratoryEmail: null,
+    medicalStoreEmail: "",
+    collectingStatus: "pending or done"
+};

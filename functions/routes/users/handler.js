@@ -12,7 +12,8 @@ let postRegisterHandler = async (req, res, next) => {
         password: req.body.password,
         displayName: req.body.displayName,
         user_type: req.body.user_type,
-        token: null
+        token: null,
+        notificationToken: null
     };
 
     var ref = firestore.collection('users');
@@ -48,18 +49,19 @@ let postLoginHandler = async (req, res, next) => {
 
     var email = req.body.email;
     var password = req.body.password;
-    var notificationToken = null;
+    var notificationToken = req.body.notificationToken;
     var ref = firestore.collection('users');
 
     await firebaseAuth.signInWithEmailAndPassword(email, password).then(async (record) => {
         var id = record.user.uid;
         await ref.where('uid', '==', id).get().then(async snapshot => {
             let idToken = uuid();
-            await ref.doc(id).update('token', idToken);
+            await ref.doc(id).update('token', idToken, 'notificationToken', notificationToken);
             snapshot.forEach(doc => {
                 var data = doc.data();
                 data['token'] = idToken;
                 delete data['password'];
+                delete data['notificationToken'];
                 res.status(200).json(data);
             });
         }).catch((error) => {

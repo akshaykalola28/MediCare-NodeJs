@@ -18,8 +18,10 @@ const firebaseAuth = firebase.auth();
 const auth = admin.auth();
 const firestore = admin.firestore();
 const storage = admin.storage();
+const messaging = admin.messaging();
 
 module.exports.auth = auth;
 module.exports.firestore = firestore;
 module.exports.storage = storage;
+module.exports.messaging = messaging;
 module.exports.firebaseAuth = firebaseAuth;
