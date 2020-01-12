@@ -21,3 +21,23 @@ var medicinesData = { //For Adding medicines
     medicalStoreEmail: "",
     collectingStatus: "pending or done"
 };
+
+{
+    "patientid": "KCFmNbBZe5YZQYHhc2CPHzLAgZl2",
+    "doctorId": "BasZGL7FrgPcjcx8oYceIQf3DWB3",
+    "doctorName": "Patel Aatish",
+    "reportDescription": "X-ray of Chest, Diabetes Report",
+    "laboratoryEmail": "amp70468@gmail.com",
+    "medicalStoreEmail": null,
+    "collectingStatus": "pending"
+}
+
+{
+	"patientid": "KCFmNbBZe5YZQYHhc2CPHzLAgZl2",
+    "doctorId": "BasZGL7FrgPcjcx8oYceIQf3DWB3",
+    "doctorName": "Patel Aatish",
+    "medicineName": "1011 After or Before eating",
+    "laboratoryEmail": null,
+    "medicalStoreEmail": "aamp70468@gmail.com",
+    "collectingStatus": "pending"
+}

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-let { postAddMedicinesHandler } = require('./handler');
+let { postAddTreatmentHandler, postCheckHistoryByDoctorHandler } = require('./handler');
 let { verifyToken } = require('./../../verifyToken');
-router.post('/addMedicines', postAddMedicinesHandler);
+router.post('/addTreatment', verifyToken, postAddTreatmentHandler);
+router.post('/checkHistory', verifyToken, postCheckHistoryByDoctorHandler);
 module.exports = router;

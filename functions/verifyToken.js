@@ -3,7 +3,6 @@ const { response } = require('./../response');
 
 let verifyToken = (req, res, next) => {
     var token = req.get('token');
-
     if (token) {
 
         var ref = firestore.collection('users');
