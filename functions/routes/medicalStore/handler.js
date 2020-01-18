@@ -47,5 +47,37 @@ let medicines = (email, status) => {
     }));
 };
 
+//add available medicines in medical store handler
+let postAddAvailableMedicineshandlers = (req, res, next) => {
+
+    var addData = req.body;
+    var laboratoryId = req.body.laboratoryId;
+    var ref = firestore.collection('availableMeicines');
+    ref.doc(laboratoryId).set(addData).then((result) => {
+        res.status(200).json(response(200, "Added succesfully."));
+    }).catch(error => {
+        res.status(401).json(response(401, error));
+    });
+};
+
+//see available medicines in medical store handler
+let postSeeAvailableMedicineshandlers = (req, res, next) => {
+
+    var sendData = {};
+    var laboratoryId = req.body.laboratoryId;
+    var ref = firestore.collection('availableMeicines');
+    ref.where('laboratoryId', '==', laboratoryId).get().then(async snapshot => {
+        await snapshot.forEach(doc => {
+            sendData = doc.data();
+        });
+        delete sendData['laboratoryId'];
+        res.status(200).json(response(200, sendData));
+    }).catch((error) => {
+        res.status(401).json(response(401, error + ""));
+    });
+};
+
 module.exports.postPendingMedicinesHandlers = postPendingMedicinesHandlers;
 module.exports.postDoneMedicinesHandlers = postDoneMedicinesHandlers;
+module.exports.postAddAvailableMedicineshandlers = postAddAvailableMedicineshandlers;
+module.exports.postSeeAvailableMedicineshandlers = postSeeAvailableMedicineshandlers;

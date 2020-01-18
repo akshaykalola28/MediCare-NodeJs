@@ -47,5 +47,32 @@ let laboratory = (email, status) => {
     }));
 };
 
+let postAddReportHandlers = (req, res, next) => {
+
+    var patientId = req.body.patientId;
+    var mId = req.body.mId;
+    var reportLink = req.body.reportLink;
+    let reportRef = firestore.collection('reports');
+    reportRef.where('uid', '==', patientId).get().then(querySnapshot => {
+        let ref = firestore.collection('reports').doc(patientId).collection('data');
+        ref.where('mId', '==', mId).get().then(snapshot => {
+            ref.doc(mId).set({reportLink: reportLink}, {merge: true}).then((result) => {
+                ref.doc(mId).update('collectingStatus', 'done').then((result) => {
+                    res.status(200).json(response(200, "Report added succesfully."));
+                }).catch((error) => {
+                    res.status(401).json(response(401, error + ""));
+                });
+            }).catch((error) => {
+                res.status(401).json(response(401, error + ""));
+            });
+        }).catch((error) => {
+            res.status(401).json(response(401, error + ""));
+        });
+    }).catch((error) => {
+        res.status(401).json(response(401, error + ""));
+    });
+};
+
 module.exports.postPendingReportsHandlers = postPendingReportsHandlers;
 module.exports.postDoneReportsHandlers = postDoneReportsHandlers;
+module.exports.postAddReportHandlers = postAddReportHandlers;

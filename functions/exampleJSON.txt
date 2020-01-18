@@ -1,27 +1,21 @@
-var medicinesData = { //For Adding Report
-    patientid: "",
-    doctorId: "",
-    reportDescription: "X-ray of Chest, Diabetes Report",
-    laboratoryEmail: "",
-    medicalStoreEmail: null,
-    collectingStatus: "pending or done"
-};
-
-var medicinesData = { //For Adding medicines
-    patientid: "",
-    doctorId: "",
-    medicineName: "1011 After or Before eating" OR follow below
+//For adding Medicines
+{
+    "patientid": "KCFmNbBZe5YZQYHhc2CPHzLAgZl2",
+    "doctorId": "BasZGL7FrgPcjcx8oYceIQf3DWB3",
+    "doctorName": "Patel Aatish",
+    "medicineName": "1011 After or Before eating" OR follow below
     "medicineName": [
         {
             "howManyTimetoTake": 1011,
             "whenToTake": "After or Before eating"
         }
     ],
-    laboratoryEmail: null,
-    medicalStoreEmail: "",
-    collectingStatus: "pending or done"
+    "laboratoryEmail": null,
+    "medicalStoreEmail": "",
+    "collectingStatus": "pending or done"
 };
 
+//For Adding Report
 {
     "patientid": "KCFmNbBZe5YZQYHhc2CPHzLAgZl2",
     "doctorId": "BasZGL7FrgPcjcx8oYceIQf3DWB3",
@@ -32,6 +26,7 @@ var medicinesData = { //For Adding medicines
     "collectingStatus": "pending"
 }
 
+//For Adding Medicines (1011 means 1 tablet in morning, 1 tablet in evening, and 1 tablet in night)
 {
 	"patientid": "KCFmNbBZe5YZQYHhc2CPHzLAgZl2",
     "doctorId": "BasZGL7FrgPcjcx8oYceIQf3DWB3",
@@ -40,4 +35,18 @@ var medicinesData = { //For Adding medicines
     "laboratoryEmail": null,
     "medicalStoreEmail": "aamp70468@gmail.com",
     "collectingStatus": "pending"
+}
+
+//Add Available Medicines (numbers are in tablets)
+{
+    "laboratoryId": "X9t8mZSWGVMdUKlnUoyxXV1Yvyo2",
+    "Abacavir Sulfate": 60,
+    "Abatacept": 50,
+    "Abilify": 100,
+    "Acamprosate Calcium": 50,
+    "Accretropin": 40,
+    "Aceon": 10,
+    "Aci-Jel": 70,
+    "Acthrel": 20,
+    "Actimmune": 30
 }
