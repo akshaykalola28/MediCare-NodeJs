@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-let { postRegisterHandler, postLoginHandler, postDeleteUserHandler, postRefreshTokenHandler, postForgotPasswordHandler } = require('./handler');
+let { postRegisterHandler, postLoginHandler, postDeleteUserHandler, postUserDetailHandler, postForgotPasswordHandler } = require('./handler');
 let { verifyToken } = require('./../../verifyToken');
 router.post('/register', postRegisterHandler);
 router.post('/login', postLoginHandler);
 router.post('/delete', verifyToken, postDeleteUserHandler);
-router.post('/refresh', verifyToken, postRefreshTokenHandler);
+router.post('/detail', verifyToken, postUserDetailHandler);
 router.post('/forgot', postForgotPasswordHandler);
 module.exports = router;

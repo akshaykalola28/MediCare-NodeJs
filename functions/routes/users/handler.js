@@ -73,9 +73,21 @@ let postLoginHandler = async (req, res, next) => {
     });
 };
 
-let postRefreshTokenHandler = (req, res, next) => {
+let postUserDetailHandler = (req, res, next) => {
 
-    res.status(200).json(response(200, "Token Verified."));
+    var email = req.body.email;
+    var ref = firestore.collection('users');
+    ref.where('email', '==', email).get().then(async snapshot => {
+        await snapshot.forEach(doc => {
+            var data = doc.data();
+            delete data['notificationToken'];
+            delete data['token'];
+            delete data['password'];
+            res.status(200).send(data);
+        });
+    }).catch((error) => {
+        res.status(401).json(response(401, error + ""));
+    });
 };
 
 let postDeleteUserHandler = async (req, res, next) => {
@@ -111,5 +123,5 @@ let postForgotPasswordHandler = (req, res, next) => {
 module.exports.postRegisterHandler = postRegisterHandler;
 module.exports.postLoginHandler = postLoginHandler;
 module.exports.postDeleteUserHandler = postDeleteUserHandler;
-module.exports.postRefreshTokenHandler = postRefreshTokenHandler;
+module.exports.postUserDetailHandler = postUserDetailHandler;
 module.exports.postForgotPasswordHandler = postForgotPasswordHandler;

@@ -3,8 +3,7 @@ const firebase = require('firebase');
 const serviceAccount = require("./../serviceAccountKey.json");
 
 admin.initializeApp( {
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://medicare-888f7.firebaseio.com"
+    credential: admin.credential.cert(serviceAccount)
 });
 const config = {
     apiKey: "AIzaSyD6UtxwTX-x4GzWbxwKqIdDog47b6TITuQ",
