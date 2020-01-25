@@ -10,7 +10,7 @@ let postRequestReportHandler = (req, res, next) => {
     var data = req.body;
     data['reportId'] = setDate;
     data['date'] = date;
-    var uid = data['patientid'];
+    var uid = data['patientId'];
     var checkRef = firestore.collection('users'); //For checking that patient exists or not.
     checkRef.where('uid', '==', uid).where('user_type', '==', "patient").get().then(async (snapshot) => {
         if (snapshot.size != 1) {
@@ -24,7 +24,7 @@ let postRequestReportHandler = (req, res, next) => {
             data['patientName'] = patientName;
             firestore.collection("reports").doc(uid).set({ patientId: uid });
             let reportRef = firestore.collection("reports").doc(uid);
-            let body = "Generate report for " + patientName;
+            let body = "Please, Generate report for " + patientName;
             reportRef.collection('data').doc(setDate).set(data).then((result) => {
                 res.status(200).json(response(200, "Added Succesfully"));
                 getNotificationToken(data.laboratoryEmail, "laboratory", "New Report Added", body).catch((error) => {
@@ -76,8 +76,8 @@ let postAddTreatmentHandler = (req, res, next) => {
         res.status(401).json(response(401, error));
     });
 };
-
 let postCheckHistoryByDoctorHandler = (req, res, next) => {
+
 
     var email = req.body.email;
     var sendData = {};
