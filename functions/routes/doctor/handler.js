@@ -32,9 +32,11 @@ let postAddTreatmentHandler = (req, res, next) => {
                     reportRef.collection('data').doc(setDate).set(data).then((result) => {
                         res.status(200).json(response(200, "Added Succesfully"));
                     }).catch((error) => {
+                        console.log(error);
                         res.status(401).json(response(401, error + ""));
                     });
                 }).catch((error) => {
+                    console.log(error);
                     res.status(401).json(response(401, error + ""));
                 });
             } else {
@@ -47,9 +49,11 @@ let postAddTreatmentHandler = (req, res, next) => {
                     medicinesRef.collection('data').doc(setDate).set(data).then((result) => {
                         res.status(200).json(response(200, "Added Succesfully"));
                     }).catch((error) => {
+                        console.log(error);
                         res.status(401).json(response(401, error));
                     });
                 }).catch((error) => {
+                    console.log(error);
                     res.status(401).json(response(401, error));
                 });
             }

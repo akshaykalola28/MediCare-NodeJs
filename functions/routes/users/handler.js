@@ -75,7 +75,7 @@ let postLoginHandler = async (req, res, next) => {
 
 let postUserDetailHandler = (req, res, next) => {
 
-    var email = req.body.email;
+    var email = req.params.id;
     var ref = firestore.collection('users');
     ref.where('email', '==', email).get().then(async snapshot => {
         await snapshot.forEach(doc => {

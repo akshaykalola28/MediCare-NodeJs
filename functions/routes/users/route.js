@@ -5,6 +5,6 @@ let { verifyToken } = require('./../../verifyToken');
 router.post('/register', postRegisterHandler);
 router.post('/login', postLoginHandler);
 router.post('/delete', verifyToken, postDeleteUserHandler);
-router.post('/detail', verifyToken, postUserDetailHandler);
 router.post('/forgot', postForgotPasswordHandler);
+router.get('/:id', verifyToken, postUserDetailHandler);
 module.exports = router;
