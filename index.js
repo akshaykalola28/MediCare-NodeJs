@@ -3,6 +3,7 @@ const userRoute = require('./functions/routes/users/route');
 const docotorRoute = require('./functions/routes/doctor/route');
 const laboratoryRoute = require('./functions/routes/laboratory/route');
 const medicalRoute = require('./functions/routes/medicalStore/route');
+const patientRoute = require('./functions/routes/patient/route');
 const app = express();
 
 // // Create and Deploy Your First Cloud Functions
@@ -25,6 +26,7 @@ app.use('/user', userRoute);
 app.use('/doctor', docotorRoute);
 app.use('/medicalStore', medicalRoute);
 app.use('/laboratory', laboratoryRoute);
+app.use('/patient', patientRoute);
 
 app.listen(8080, () => {
 	console.log('Server Started.');

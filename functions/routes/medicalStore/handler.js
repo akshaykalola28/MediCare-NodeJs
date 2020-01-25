@@ -6,7 +6,7 @@ let postPendingMedicinesHandlers = (req, res, next) => {
     var email = req.body.email;
     var sendData = {};
     medicines(email, "pending").then((data) => {
-        res.status(200).json(response(200, data));
+        res.status(200).send(data);
     }).catch((error) => {
         res.status(401).json(response(401, error + ""));
     });
@@ -18,7 +18,7 @@ let postDoneMedicinesHandlers = (req, res, next) => {
     var email = req.body.email;
     var sendData = {};
     medicines(email, "done").then((data) => {
-        res.status(200).json(response(200, data));
+        res.status(200).send(data);
     }).catch((error) => {
         res.status(401).json(response(401, error + ""));
     });
