@@ -4,5 +4,5 @@ let { postAddTreatmentHandler, postCheckHistoryByDoctorHandler, postRequestRepor
 let { verifyToken } = require('./../../verifyToken');
 router.post('/addTreatment', verifyToken, postAddTreatmentHandler);
 router.post('/checkHistory', verifyToken, postCheckHistoryByDoctorHandler);
-router.post('/reqReport', postRequestReportHandler);
+router.post('/reqReport', verifyToken, postRequestReportHandler);
 module.exports = router;
