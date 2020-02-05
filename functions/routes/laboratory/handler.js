@@ -29,17 +29,23 @@ let laboratory = (email, status) => {
 
     return new Promise(((resolve, reject) => {
         var reportsRecord = [];
-        auth.getUserByEmail(email).then((userRecord) => {
-            let uid = userRecord.uid;
-            let reportsRef = firestore.collection('reports').doc(uid).collection('data');
-            reportsRef.where('collectingStatus', '==', status).get().then(snapshot => {
-                let data = snapshot.docs;
-                for (let i of data) {
-                    reportsRecord.push(i.data());
-                }
-                resolve(reportsRecord);
-                return
-            });
+        let reportsRef_1 = firestore.collection('reports');
+        reportsRef_1.get().then(async snapshot => {
+            let data = snapshot.docs;
+            for (let i of data) {
+                var patientId = i.data().patientId;
+                let reportRef_2 = firestore.collection('reports').doc(patientId).collection('data');
+                await reportRef_2.where('laboratoryEmail', '==', email).where('collectingStatus', '==', status).get().then(querySnapshot => {
+                    for (let j of querySnapshot.docs) {
+                        reportsRecord.push(j.data());
+                    }
+                }).catch((error) => {
+                    reject(error);
+                    return
+                });
+            }
+            resolve(reportsRecord);
+            return
         }).catch((error) => {
             reject(error);
             return
@@ -56,7 +62,7 @@ let postAddReportHandlers = (req, res, next) => {
     reportRef.where('uid', '==', patientId).get().then(querySnapshot => {
         let ref = firestore.collection('reports').doc(patientId).collection('data');
         ref.where('reportId', '==', reportId).get().then(snapshot => {
-            ref.doc(reportId).set({reportLink: reportLink}, {merge: true}).then((result) => {
+            ref.doc(reportId).set({ reportLink: reportLink }, { merge: true }).then((result) => {
                 ref.doc(reportId).update('collectingStatus', 'done').then((result) => {
                     res.status(200).json(response(200, "Report added succesfully."));
                 }).catch((error) => {

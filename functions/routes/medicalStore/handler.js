@@ -29,17 +29,23 @@ let medicines = (email, status) => {
 
     return new Promise(((resolve, reject) => {
         var medicinesRecord = [];
-        auth.getUserByEmail(email).then((userRecord) => {
-            let uid = userRecord.uid;
-            let medicinesRef = firestore.collection('medicines').doc(uid).collection('data');
-            medicinesRef.where('collectingStatus', '==', status).get().then(snapshot => {
-                let data = snapshot.docs;
-                for (let i of data) {
-                    medicinesRecord.push(i.data());
-                }
-                resolve(medicinesRecord);
-                return
-            });
+        let medicinesRef_1 = firestore.collection('reports');
+        medicinesRef_1.get().then(async snapshot => {
+            let data = snapshot.docs;
+            for (let i of data) {
+                var patientId = i.data().patientId;
+                let medicinesRef_2 = firestore.collection('medicines').doc(patientId).collection('data');
+                await medicinesRef_2.where('medicalStoreEmail', '==', email).where('collectingStatus', '==', status).get().then(querySnapshot => {
+                    for (let j of querySnapshot.docs) {
+                        medicinesRecord.push(j.data());
+                    }
+                }).catch((error) => {
+                    reject(error);
+                    return
+                });
+            }
+            resolve(medicinesRecord);
+            return
         }).catch((error) => {
             reject(error);
             return
