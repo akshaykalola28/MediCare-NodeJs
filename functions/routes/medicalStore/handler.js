@@ -35,10 +35,15 @@ let medicines = (email, status) => {
             for (let i of data) {
                 var patientId = i.data().patientId;
                 let medicinesRef_2 = firestore.collection('medicines').doc(patientId).collection('data');
-                await medicinesRef_2.where('medicalStoreEmail', '==', email).where('collectingStatus', '==', status).get().then(querySnapshot => {
-                    for (let j of querySnapshot.docs) {
-                        medicinesRecord.push(j.data());
-                    }
+                await medicinesRef_2.where('medicalStoreEmail', '==', email).get().then(async querySnapshot => {
+                    await medicinesRef_2.where('collectingStatus', '==', status).get().then(snapshot => {
+                        for (let j of snapshot.docs) {
+                            medicinesRecord.push(j.data());
+                        }
+                    }).catch((error) => {
+                        reject(error);
+                        return
+                    });
                 }).catch((error) => {
                     reject(error);
                     return

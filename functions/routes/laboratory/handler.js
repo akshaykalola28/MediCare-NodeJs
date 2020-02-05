@@ -18,7 +18,7 @@ let postDoneReportsHandlers = (req, res, next) => {
     var email = req.body.email;
     var sendData = {};
     laboratory(email, "done").then((data) => {
-        res.status(200).sebd(data);
+        res.status(200).send(data);
     }).catch((error) => {
         res.status(401).json(response(401, error + ""));
     });
@@ -35,10 +35,15 @@ let laboratory = (email, status) => {
             for (let i of data) {
                 var patientId = i.data().patientId;
                 let reportRef_2 = firestore.collection('reports').doc(patientId).collection('data');
-                await reportRef_2.where('laboratoryEmail', '==', email).where('collectingStatus', '==', status).get().then(querySnapshot => {
-                    for (let j of querySnapshot.docs) {
-                        reportsRecord.push(j.data());
-                    }
+                await reportRef_2.where('laboratoryEmail', '==', email).get().then(async querySnapshot => {
+                    await reportRef_2.where('collectingStatus', '==', status).get().then(snapshot => {
+                        for (let j of snapshot.docs) {
+                            reportsRecord.push(j.data());
+                        }
+                    }).catch((error) => {
+                        reject(error);
+                        return
+                    });
                 }).catch((error) => {
                     reject(error);
                     return
