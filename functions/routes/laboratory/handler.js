@@ -3,26 +3,23 @@ const { firestore, auth } = require('./../../dbconnection');
 
 let postPendingReportsHandlers = (req, res, next) => {
 
-    var email = req.body.email;
-    var sendData = {};
-    laboratory(email, "pending").then((data) => {
-        res.status(200).send(data);
-    }).catch((error) => {
-        res.status(401).json(response(401, error + ""));
+    let db = firestore.collection('users');
+    db.where('token', '==', req.get('token')).get().then(snapshot => {
+
+        if (snapshot.size > 1 || snapshot.empty) {
+            //Invalid User
+            res.status(401).send("User not found.");
+        } else {
+            snapshot.forEach(doc => {
+
+                laboratory(doc.data()['email'], req.params.status).then((data) => {
+                    res.status(200).send(data);
+                }).catch((error) => {
+                    res.status(401).json(response(401, error + ""));
+                });
+            })
+        }
     });
-
-};
-
-let postDoneReportsHandlers = (req, res, next) => {
-
-    var email = req.body.email;
-    var sendData = {};
-    laboratory(email, "done").then((data) => {
-        res.status(200).send(data);
-    }).catch((error) => {
-        res.status(401).json(response(401, error + ""));
-    });
-
 };
 
 let laboratory = (email, status) => {
@@ -85,5 +82,4 @@ let postAddReportHandlers = (req, res, next) => {
 };
 
 module.exports.postPendingReportsHandlers = postPendingReportsHandlers;
-module.exports.postDoneReportsHandlers = postDoneReportsHandlers;
 module.exports.postAddReportHandlers = postAddReportHandlers;
