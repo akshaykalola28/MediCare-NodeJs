@@ -75,9 +75,14 @@ let postLoginHandler = async (req, res, next) => {
 
 let postUserDetailHandler = (req, res, next) => {
 
-    var email = req.params.id;
+    let key = req.params.key;
+    var value = req.params.value;
     var ref = firestore.collection('users');
-    ref.where('email', '==', email).get().then(async snapshot => {
+    ref.where(key, '==', value).get().then(async snapshot => {
+        if(snapshot.size != 1){
+            res.status(401).send(response(401,'User not found.'));
+            return;
+        }
         await snapshot.forEach(doc => {
             var data = doc.data();
             delete data['notificationToken'];

@@ -6,5 +6,5 @@ router.post('/register', postRegisterHandler);
 router.post('/login', postLoginHandler);
 router.post('/delete', verifyToken, postDeleteUserHandler);
 router.post('/forgot', postForgotPasswordHandler);
-router.get('/:id', verifyToken, postUserDetailHandler);
+router.get('/:key/:value', verifyToken, postUserDetailHandler);
 module.exports = router;
