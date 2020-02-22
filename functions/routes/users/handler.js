@@ -13,7 +13,8 @@ let postRegisterHandler = async (req, res, next) => {
         displayName: req.body.displayName,
         user_type: req.body.user_type,
         token: null,
-        notificationToken: null
+        notificationToken: null,
+        profileUrl: req.body.profileUrl
     };
 
     var ref = firestore.collection('users');
@@ -79,8 +80,8 @@ let postUserDetailHandler = (req, res, next) => {
     var value = req.params.value;
     var ref = firestore.collection('users');
     ref.where(key, '==', value).get().then(async snapshot => {
-        if(snapshot.size != 1){
-            res.status(401).send(response(401,'User not found.'));
+        if (snapshot.size != 1) {
+            res.status(401).send(response(401, 'User not found.'));
             return;
         }
         await snapshot.forEach(doc => {
