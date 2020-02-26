@@ -57,7 +57,7 @@ let postAddTreatmentHandler = (req, res, next) => {
     var data = req.body;
     data['treatmentId'] = setDate;
     data['date'] = date;
-    var uid = data['patientid'];
+    var uid = data['patientId'];
     var checkRef = firestore.collection('users'); //For checking that patient exists or not.
     checkRef.where('uid', '==', uid).where('user_type', '==', "patient").get().then(async (snapshot) => {
         if (snapshot.size != 1) {
