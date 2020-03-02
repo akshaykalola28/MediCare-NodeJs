@@ -89,11 +89,11 @@ let postAddTreatmentHandler = (req, res, next) => {
 let postCheckHistoryByDoctorHandler = (req, res, next) => {
 
 
-    var email = req.body.email;
+    var uid = req.params.patientId;
     var sendData = {};
-    medicinesHistory(email).then((medicinesData) => {
+    medicinesHistory(uid).then((medicinesData) => {
         sendData['medicinesData'] = medicinesData;
-        reportsHistory(email).then((reportsData) => {
+        reportsHistory(uid).then((reportsData) => {
             sendData['reportsData'] = reportsData;
             res.status(200).send(sendData);
         }).catch((error) => {
@@ -104,21 +104,18 @@ let postCheckHistoryByDoctorHandler = (req, res, next) => {
     });
 };
 
-let medicinesHistory = (email) => {
+let medicinesHistory = (id) => {
 
     var medicinesRecords = [];
     return new Promise(((resolve, reject) => {
-        auth.getUserByEmail(email).then((userRecord) => {
-            var id = userRecord.uid;
-            var medicinesRef = firestore.collection('medicines').doc(id).collection('data');
-            medicinesRef.orderBy('date', 'desc').get().then(async (snapshot) => {
-                let data = snapshot.docs;
-                for (let i of data) {
-                    medicinesRecords.push(i.data());
-                }
-                resolve(medicinesRecords);
-                return
-            });
+        var medicinesRef = firestore.collection('medicines').doc(id).collection('data');
+        medicinesRef.orderBy('date', 'desc').get().then(async (snapshot) => {
+            let data = snapshot.docs;
+            for (let i of data) {
+                medicinesRecords.push(i.data());
+            }
+            resolve(medicinesRecords);
+            return
         }).catch((error) => {
             reject(error);
             return
@@ -126,21 +123,18 @@ let medicinesHistory = (email) => {
     }));
 };
 
-let reportsHistory = (email) => {
+let reportsHistory = (id) => {
 
     var reportsRecords = [];
     return new Promise(((resolve, reject) => {
-        auth.getUserByEmail(email).then((userRecord) => {
-            var id = userRecord.uid;
-            let reportsRef = firestore.collection('reports').doc(id).collection('data');
-            reportsRef.orderBy('date', 'desc').get().then(async (snapshot) => {
-                let data = snapshot.docs;
-                for (let i of data) {
-                    reportsRecords.push(i.data());
-                }
-                resolve(reportsRecords);
-                return
-            });
+        let reportsRef = firestore.collection('reports').doc(id).collection('data');
+        reportsRef.orderBy('date', 'desc').get().then(async (snapshot) => {
+            let data = snapshot.docs;
+            for (let i of data) {
+                reportsRecords.push(i.data());
+            }
+            resolve(reportsRecords);
+            return
         }).catch((error) => {
             reject(error);
             return
