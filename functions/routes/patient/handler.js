@@ -10,7 +10,7 @@ let postCheckHistoryHandler = (req, res, next) => {
         sendData['medicinesData'] = medicinesData;
         reportsHistory(uid).then((reportsData) => {
             sendData['reportsData'] = reportsData;
-            res.status(200).json(response(200, sendData));
+            res.status(200).json(sendData);
         }).catch((error) => {
             res.status(401).json(response(401, error + ""));
         });
