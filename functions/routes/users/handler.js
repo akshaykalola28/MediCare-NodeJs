@@ -16,8 +16,9 @@ let postRegisterHandler = async (req, res, next) => {
         notificationToken: null,
         profileUrl: req.body.profileUrl
     };
-
-    var ref = firestore.collection('users');
+    console.log(req);
+    res.send(data);
+    /*var ref = firestore.collection('users');
     var userExists;
     await auth.createUser({
         email: req.body.email,
@@ -43,7 +44,7 @@ let postRegisterHandler = async (req, res, next) => {
     }).catch((error) => {
         console.log(error);
         res.status(409).json(response(409, "Email or Phone Number already exists."));
-    });
+    });*/
 };
 
 let postLoginHandler = async (req, res, next) => {
