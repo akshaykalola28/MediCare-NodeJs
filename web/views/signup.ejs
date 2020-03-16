@@ -45,10 +45,15 @@
                 return true;
             }
         }
+
+        function showAlert(message) {
+            alert(message);
+        }
     </script>
 </head>
 
 <body style="background-color: cornflowerblue;">
+
     <ul>
         <li><a href="">MEDICARE</a></li>
         <li style="float: right;"><a href="login">LogIn</a></li>
@@ -56,37 +61,43 @@
         <li style="float: right;"><a href="index">Home</a></li>
     </ul>
 
-    <form class="center" method="POST" name="signup" onsubmit="return validateForm();" action="user/register">
+    <% if (locals.message) { %>
+        <h1><%= message %> </h1>
+    <% } %>
+
+    <form class="center" method="POST" name="signup" action="/signup">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" inputmode="text" id="firstName" required>
+            <input class="mdl-textfield__input" type="text" inputmode="text" id="firstName" name="firstName" required>
             <label class="mdl-textfield__label" for="firstName">First Name</label>
         </div><br>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" inputmode="text" id="lastName" required>
+            <input class="mdl-textfield__input" type="text" inputmode="text" id="lastName" name="lastName" required>
             <label class="mdl-textfield__label" for="lastName">Last Name</label>
         </div><br>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" inputmode="text" id="displayName" required>
+            <input class="mdl-textfield__input" type="text" inputmode="text" id="displayName" name="displayName"
+                required>
             <label class="mdl-textfield__label" for="displayName">Nick Name</label>
         </div><br>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" inputmode="email" id="email" required>
+            <input class="mdl-textfield__input" type="text" inputmode="email" id="email" name="email" required>
             <label class="mdl-textfield__label" for="email">Email</label>
         </div><br>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" inputmode="text" id="phoneNumber" required>
+            <input class="mdl-textfield__input" type="text" inputmode="text" maxlength="10" id="phoneNumber"
+                name="phoneNumber" required>
             <label class="mdl-textfield__label" for="phoneNumber">Mobile No.</label>
         </div><br>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" maxlength="6" id="password" required>
+            <input class="mdl-textfield__input" type="password" id="password" name="password" required>
             <label class="mdl-textfield__label" for="password">Password</label>
         </div><br>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" id="cnfpassword" required>
+            <input class="mdl-textfield__input" type="password" id="cnfpassword" name="cnfpassword" required>
             <label class="mdl-textfield__label" for="cnfpassword">Confirm Password</label>
         </div><br>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="user_type" value="hospital" readonly>
+            <input class="mdl-textfield__input" type="text" id="user_type" value="hospital" name="user_type" readonly>
             <label class="mdl-textfield__label" for="user_type">User Type</label>
         </div><br>
         <button class="mdl-button mdl-button__ripple">

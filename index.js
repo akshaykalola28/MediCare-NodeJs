@@ -27,16 +27,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'web/public')));
-/*app.get('/', (req, res) => {
-	res.status(200).send('Hello World!').end();
-});*/
 
 app.get('/demo', (req, res) => {
 	res.send('I updated.');
 });
 
 app.use('/', indexRouter);
-app.use('/index', indexRouter);
 app.use('/users', usersRouter);
 
 app.use('/user', userRoute);
@@ -44,7 +40,6 @@ app.use('/doctor', docotorRoute);
 app.use('/medicalStore', medicalRoute);
 app.use('/laboratory', laboratoryRoute);
 app.use('/patient', patientRoute);
-
 
 app.listen(8080, () => {
 	console.log('Server Started.');
