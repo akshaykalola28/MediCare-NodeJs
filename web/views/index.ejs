@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title><%= title %></title>
+    <title>MediCare</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -12,118 +12,55 @@
 </head>
 
 <body>
+
     <ul id="fixed-header">
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">Close</a>
+            <a href="/">Home</a>
+            <a href="/">Add Doctor</a>
+            <a href="/">Add Medical Store</a>
+            <a href="/">Add Laboratory</a>
+        </div>
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">Open</span>
         <li><a href="">MEDICARE</a></li>
         <li style="float: right;"><a href="/login">LogIn</a></li>
         <li style="float: right;"><a href="/signup">SignUp</a></li>
-        <li style="float: right;"><a href="/">Home</a></li>
+        <li style="float: right;"><a href="/index">Home</a></li>
+    </ul>
+    <ul>
+        <li style="float: right;"><a href="/">Add Doctor</a></li>
+        <li style="float: right;"><a href="/">Add Medical Store</a></li>
+        <li style="float: right;"><a href="/">Add Laboratory</a></li>
     </ul>
 
     <% if (locals.message) { %>
-        <h1 class="center"><%= message %> </h1>
+    <h5 class="center"><%= message %> </h5>
     <% } %>
+    <br>
+    <button class="mdl-button">
+        <div class="mdl-button__ripple"></div>
+        <span class="mdl-button__label"><a style=" text-decoration: none;" href="/">Add Doctor</a></span>
+    </button><br>
 
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
-    <p>The MediCare application is intended to provide complete solutions for Doctors and Patients.
-        When a patient goes to doctor then he do not have to carry all files and medicines. By using this
-        application doctor can see all the record of patient. If doctor give any medicine or report then it will
-        directly goes to medical store or laboratory specified by the doctor. The main purpose behind this
-        application to provide a beneficial service to doctor and patient both. With the help of this application
-        patient gets a complete solution of their diseases. With the help of previous record doctor will give
-        the better consultancy to the patients. And, patients can not faces the trouble for it. Patients see their
-        previous records about the treatments and diseases.
-    </p>
+    <button class="mdl-button">
+        <div class="mdl-button__ripple"></div>
+        <span class="mdl-button__label">Add Medical Store</span>
+    </button><br>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-                <h3>Column 1</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-            </div>
-            <div class="col-sm-4">
-                <h3>Column 2</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-            </div>
-            <div class="col-sm-4">
-                <h3>Column 3</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-            </div>
-        </div>
-    </div>
+    <button class="mdl-button">
+        <div class="mdl-button__ripple"></div>
+        <span class="mdl-button__label">Add Laboratory</span>
+    </button>
 </body>
+
+<script>
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+</script>
 
 </html>

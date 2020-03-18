@@ -30,18 +30,6 @@
                 alert("Please, select valid user type except none.");
                 return false;
             } else {
-                /*var data = {
-                    "firstName": firstName,
-                    "lastName": lastName,
-                    "email": email,
-                    "phoneNumber": phoneNumber,
-                    "password": password,
-                    "displayName": displayName,
-                    "user_type": user_type,
-                    "profileUrl": null
-                };
-                var jsonData = JSON.stringify(data);
-                alert(jsonData);*/
                 return true;
             }
         }
@@ -58,11 +46,10 @@
         <li><a href="">MEDICARE</a></li>
         <li style="float: right;"><a href="login">LogIn</a></li>
         <li style="float: right;"><a href="signup">SignUp</a></li>
-        <li style="float: right;"><a href="index">Home</a></li>
     </ul>
 
     <% if (locals.message) { %>
-        <h1><%= message %> </h1>
+        <h5><%= message %> </h5>
     <% } %>
 
     <form class="center" method="POST" name="signup" action="/signup">
@@ -100,8 +87,9 @@
             <input class="mdl-textfield__input" type="text" id="user_type" value="hospital" name="user_type" readonly>
             <label class="mdl-textfield__label" for="user_type">User Type</label>
         </div><br>
-        <button class="mdl-button mdl-button__ripple">
-            <input class="mdl-button__label" type="submit" id="submit">
+        <button class="mdl-button">
+            <div class="mdl-button__ripple"></div>
+            <span class="mdl-button__label">SignUp</span>
         </button>
     </form>
 
