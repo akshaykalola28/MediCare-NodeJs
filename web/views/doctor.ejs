@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../css/iofrm-style.css">
+    <link rel="stylesheet" href="../css/iofrm-theme12.css">
+</head>
+
+<body>
+    <div class="form-body">
+        <div class="row">
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <div class="website-logo-inside">
+                            <a href="/">
+                                <div class="logo">
+                                    <img class="logo-size" src="../images/logo-light.svg" alt="">
+                                </div>
+                            </a>
+                        </div>
+                        <h3>Register</h3>
+                        <div class="page-links">
+                            <a href="/hospital">Hospital</a><a href="/doctor" class="active">Doctor</a><a
+                                href="/medicalStore">Medical Store</a><a href="/laboratory">Laboratory</a>
+                        </div>
+                        <form method="POST" action="/doctor">
+                            <input class="form-control" type="text" name="displayName" placeholder="Doctor Name"
+                                required>
+                            <input class="form-control" type="text" name="hospitalName" placeholder="Hospital Name"
+                                required>
+                            <input class="form-control" type="email" name="email" placeholder="E-mail Address" required>
+                            <input class="form-control" type="text" name="phoneNumber" placeholder="Phone No."
+                                maxlength="10" required>
+                            <input class="form-control" type="password" name="password" placeholder="Password" required>
+                            <input class="form-control" type="password" name="cnfpassword"
+                                placeholder="Rewrite Password" required>
+                            <input class="form-contorl" type="hidden" name="user_type" value="doctor" readonly>
+                            <div class="form-button">
+                                <button id="submit" type="submit" class="ibtn">Register</button>
+                            </div>
+                        </form>
+                        <% if (locals.message) { %>
+                        <h5><%= message %> </h5>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

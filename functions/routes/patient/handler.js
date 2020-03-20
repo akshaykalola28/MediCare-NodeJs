@@ -1,5 +1,6 @@
 const { response } = require('./../../../response');
 const { auth, firestore } = require('./../../dbconnection');
+const dateFormat = require('dateformat');
 
 let postCheckHistoryHandler = (req, res, next) => {
 
@@ -57,4 +58,45 @@ let reportsHistory = (id) => {
     }));
 };
 
+let postBookAppoinmentHandler = async (req, res, next) => {
+
+    let data = {
+        patientId: req.body.patientId,
+        doctorId: req.body.doctorId,
+        hospitalId: req.body.hospitalId
+    };
+    var date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+    data['date'] = date;
+    let checkRef_1 = firestore.collection('users');
+    await checkRef_1.where('uid', '==', data.patientId).where('user_type', '==', "patient").get().then(async snapshot => {
+        if (snapshot.size != 1) {
+            res.status(409).json(response(409, "Patient does not exists."));
+        } else {
+            var patientName;
+            await snapshot.forEach(doc => {
+                patientName = doc.data().displayName;
+            });
+            data['patientName'] = patientName;
+            var checkRef_2 = firestore.collection('users');
+            await checkRef_2.where('uid', '==', data.doctorId).where('user_type', '==', 'doctor').get().then((querySnapshot) => {
+                if (querySnapshot.size != 1) {
+                    res.status(409).json(response(409, "Doctor does not exists."));
+                } else {
+                    firestore.collection("appointment").doc(data.hospitalId).set({ hospitalId: data.hospitalId });
+                    let appointmentRef = firestore.collection("appointment").doc(data.hospitalId);
+                    appointmentRef.collection('data').add(data).then((result) => {
+                        res.status(200).json(response(200, "Appointment Booked Succesfully"));
+                    }).catch((error) => {
+                        console.log(error);
+                        res.status(401).json(response(401, error + ""));
+                    });
+                }
+            }).catch((error) => {
+                res.status(401).json(response(401, error));
+            });
+        }
+    });
+};
+
 module.exports.postCheckHistoryHandler = postCheckHistoryHandler;
+module.exports.postBookAppoinmentHandler = postBookAppoinmentHandler;

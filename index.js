@@ -11,7 +11,6 @@ const patientRoute = require('./functions/routes/patient/route');
 const app = express();
 
 var indexRouter = require('./web/routes/index');
-var usersRouter = require('./web/routes/users');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -33,7 +32,6 @@ app.get('/demo', (req, res) => {
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 app.use('/user', userRoute);
 app.use('/doctor', docotorRoute);
