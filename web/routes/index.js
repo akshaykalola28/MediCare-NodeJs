@@ -32,36 +32,43 @@ router.post('/hospital', async (req, res, next) => {
     } else {
         var ref = firestore.collection('users');
         var userExists;
-        await auth.createUser({
-            email: req.body.email,
-            phoneNumber: '+91' + req.body.phoneNumber,
-            password: req.body.password,
-            displayName: req.body.displayName
-        }).then(async (userRecord) => {
-            var uid = userRecord.uid;
-            data['uid'] = uid;
-            await ref.where('uid', '==', uid).get().then(snapshot => {
-                userExists = snapshot.size;
-                if (userExists && userExists > 0) {
-                    res.status(409).json(response(409, "ER_DUP_ENTRY"));
-                } else {
-                    let userRef = firestore.collection('users').doc(uid);
-                    userRef.set(data).then(() => {
+        await ref.where('displayName', '==', req.body.displayName).get().then(async checkSnapshot => {
+            userExists = checkSnapshot.size;
+            if (userExists && userExists > 0) {
+                res.status(409).json(response(409, "Display Name already exists."));
+            } else {
+                await auth.createUser({
+                    email: req.body.email,
+                    phoneNumber: '+91' + req.body.phoneNumber,
+                    password: req.body.password,
+                    displayName: req.body.displayName
+                }).then(async (userRecord) => {
+                    var uid = userRecord.uid;
+                    data['uid'] = uid;
+                    await ref.where('uid', '==', uid).get().then(snapshot => {
+                        userExists = snapshot.size;
+                        if (userExists && userExists > 0) {
+                            res.status(409).json(response(409, "ER_DUP_ENTRY"));
+                        } else {
+                            let userRef = firestore.collection('users').doc(uid);
+                            userRef.set(data).then(() => {
+                                res.render('hospital', {
+                                    message: 'Registration Succesfully.'
+                                })
+                            });
+                        }
+                    }).catch(error => {
                         res.render('hospital', {
-                            message: 'Registration Succesfully.'
+                            message: error + ""
                         })
                     });
-                }
-            }).catch(error => {
-                res.render('hospital', {
-                    message: error + ""
-                })
-            });
-        }).catch((error) => {
-            res.render('hospital', {
-                message: "Email or Phone Number already exists."
-            })
-            console.log(error);
+                }).catch((error) => {
+                    res.render('hospital', {
+                        message: "Email or Phone Number already exists."
+                    })
+                    console.log(error);
+                });
+            }
         });
     }
 });
