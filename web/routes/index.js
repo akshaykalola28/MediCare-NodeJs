@@ -35,7 +35,9 @@ router.post('/hospital', async (req, res, next) => {
         await ref.where('displayName', '==', req.body.displayName).get().then(async checkSnapshot => {
             userExists = checkSnapshot.size;
             if (userExists && userExists > 0) {
-                res.status(409).json(response(409, "Display Name already exists."));
+                res.render('hospital', {
+                    message: 'Display Name already exists.'
+                })
             } else {
                 await auth.createUser({
                     email: req.body.email,
@@ -48,7 +50,9 @@ router.post('/hospital', async (req, res, next) => {
                     await ref.where('uid', '==', uid).get().then(snapshot => {
                         userExists = snapshot.size;
                         if (userExists && userExists > 0) {
-                            res.status(409).json(response(409, "ER_DUP_ENTRY"));
+                            res.render('hospital', {
+                                message: 'ER_DUP_ENTRY'
+                            })
                         } else {
                             let userRef = firestore.collection('users').doc(uid);
                             userRef.set(data).then(() => {
@@ -131,40 +135,46 @@ let addData = (body) => {
         } else {
             var ref1 = firestore.collection('users');
             await ref1.where('displayName', '==', data.hospitalName).get().then(async hospitalSnapshot => {
-                await hospitalSnapshot.forEach(result => {
-                    data['hospitalId'] = result.data()['uid'];
-                });
-                console.log(data);
-                var ref2 = firestore.collection('users');
-                var userExists;
-                await auth.createUser({
-                    email: req.body.email,
-                    phoneNumber: '+91' + req.body.phoneNumber,
-                    password: req.body.password,
-                    displayName: req.body.displayName
-                }).then(async (userRecord) => {
-                    var uid = userRecord.uid;
-                    data['uid'] = uid;
-                    await ref2.where('uid', '==', uid).get().then(snapshot => {
-                        userExists = snapshot.size;
-                        if (userExists && userExists > 0) {
-                            res.status(409).json(response(409, "ER_DUP_ENTRY"));
-                        } else {
-                            let userRef = firestore.collection('users').doc(uid);
-                            userRef.set(data).then(() => {
-                                resolve("Doctor details added Succesfully.");
+                let userExists = hospitalSnapshot.size;
+                if (userExists && userExists > 0) {
+                    reject("Hospital does not exists.")
+                    return
+                } else {
+                    await hospitalSnapshot.forEach(result => {
+                        data['hospitalId'] = result.data()['uid'];
+                    });
+                    console.log(data);
+                    var ref2 = firestore.collection('users');
+                    await auth.createUser({
+                        email: req.body.email,
+                        phoneNumber: '+91' + req.body.phoneNumber,
+                        password: req.body.password,
+                        displayName: req.body.displayName
+                    }).then(async (userRecord) => {
+                        var uid = userRecord.uid;
+                        data['uid'] = uid;
+                        await ref2.where('uid', '==', uid).get().then(snapshot => {
+                            userExists = snapshot.size;
+                            if (userExists && userExists > 0) {
+                                reject("ER_DUP_ENTRY");
                                 return
-                            });
-                        }
-                    }).catch(error => {
-                        reject(error + "");
+                            } else {
+                                let userRef = firestore.collection('users').doc(uid);
+                                userRef.set(data).then(() => {
+                                    resolve("Doctor details added Succesfully.");
+                                    return
+                                });
+                            }
+                        }).catch(error => {
+                            reject(error + "");
+                            return
+                        });
+                    }).catch((error) => {
+                        console.log(error);
+                        reject("Email or Phone Number already exists.");
                         return
                     });
-                }).catch((error) => {
-                    console.log(error);
-                    reject("Email or Phone Number already exists.");
-                    return
-                });
+                }
             }).catch((error) => {
                 console.log(error);
                 reject("Hospital Name is invalid.");

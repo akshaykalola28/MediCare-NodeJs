@@ -99,37 +99,30 @@ let postBookAppoinmentHandler = async (req, res, next) => {
 };
 
 let postShowAvailableDoctorHandler = async (req, res, next) => {
-/*
-    var sendData = [];
-    var getData = {};
-    var getDoctorData = [];
+
+    const sendData = [];
     let ref = firestore.collection('users');
     await ref.where('user_type', '==', 'hospital').get().then(async value => {
         let data = value.docs;
         for (let i of data) {
-            //console.log(i.data()['displayName']);
+            let getData = {};
             await getDoctor(i.data()['displayName']).then((getResult) => {
-                //console.log("1");
                 getData['hospitalName'] = i.data()['displayName'];
-                //console.log("Get: " + i.data()['displayName']);
                 getData['doctor'] = getResult;
                 sendData.push(getData);
             }).catch(error => {
                 res.status(401).json(response(401, error + ""));
             });
-            console.log(sendData);
-            //sendData.push(result.data());
         }
         res.status(200).send(sendData);
     }).catch((error) => {
         res.status(404).json(response(404, error + ""));
-    });*/
+    });
 };
 
 let getDoctor = (hospitalName) => {
 
-    //console.log(hospitalName);
-    var getData = [];
+    const getData = [];
     return new Promise(((resolve, reject) => {
         let ref = firestore.collection('users')
         ref.where('user_type', '==', 'doctor').where('hospitalName', '==', hospitalName).get().then(async (snapshot) => {
@@ -137,7 +130,6 @@ let getDoctor = (hospitalName) => {
             for (let i of data) {
                 getData.push(i.data());
             }
-            //console.log(getData);
             resolve(getData);
             return
         }).catch((error) => {
