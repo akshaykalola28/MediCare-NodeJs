@@ -5,6 +5,6 @@ let { verifyToken } = require('./../../verifyToken');
 route.get('/checkHistory/:patientId', verifyToken, postCheckHistoryHandler);
 route.post('/bookAppointment', verifyToken, postBookAppoinmentHandler);
 //show available doctors in this application
-route.post('/checkStatus', verifyToken, postShowAvailableDoctorHandler);
+route.post('/showDoctor', verifyToken, postShowAvailableDoctorHandler);
 //show status of booked appiontment
 module.exports = route;
