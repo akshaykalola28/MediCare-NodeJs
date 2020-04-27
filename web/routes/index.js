@@ -127,7 +127,6 @@ let addData = (body) => {
             notificationToken: null,
             profileUrl: body.profileUrl || ""
         };
-        console.log(data)
         let cnfpassword = body.cnfpassword;
         if (data.password != cnfpassword) {
             reject("Your password and confirm password does not match.");
@@ -136,7 +135,7 @@ let addData = (body) => {
             var ref1 = firestore.collection('users');
             await ref1.where('displayName', '==', data.hospitalName).get().then(async hospitalSnapshot => {
                 let userExists = hospitalSnapshot.size;
-                if (userExists && userExists > 0) {
+                if (userExists != 1) {
                     reject("Hospital does not exists.")
                     return
                 } else {
@@ -146,10 +145,10 @@ let addData = (body) => {
                     console.log(data);
                     var ref2 = firestore.collection('users');
                     await auth.createUser({
-                        email: req.body.email,
-                        phoneNumber: '+91' + req.body.phoneNumber,
-                        password: req.body.password,
-                        displayName: req.body.displayName
+                        email: body.email,
+                        phoneNumber: '+91' + body.phoneNumber,
+                        password: body.password,
+                        displayName: body.displayName
                     }).then(async (userRecord) => {
                         var uid = userRecord.uid;
                         data['uid'] = uid;
@@ -161,7 +160,7 @@ let addData = (body) => {
                             } else {
                                 let userRef = firestore.collection('users').doc(uid);
                                 userRef.set(data).then(() => {
-                                    resolve("Doctor details added Succesfully.");
+                                    resolve("Details added Succesfully.");
                                     return
                                 });
                             }
