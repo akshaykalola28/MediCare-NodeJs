@@ -8,6 +8,7 @@ const docotorRoute = require('./functions/routes/doctor/route');
 const laboratoryRoute = require('./functions/routes/laboratory/route');
 const medicalRoute = require('./functions/routes/medicalStore/route');
 const patientRoute = require('./functions/routes/patient/route');
+const hospitalRoute = require('./functions/routes/hospital/route');
 const app = express();
 
 var indexRouter = require('./web/routes/index');
@@ -38,6 +39,7 @@ app.use('/doctor', docotorRoute);
 app.use('/medicalStore', medicalRoute);
 app.use('/laboratory', laboratoryRoute);
 app.use('/patient', patientRoute);
+app.use('/hospital', hospitalRoute);
 
 app.listen(8080, () => {
 	console.log('Server Started.');

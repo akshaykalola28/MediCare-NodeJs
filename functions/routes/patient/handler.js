@@ -78,11 +78,20 @@ let postBookAppoinmentHandler = async (req, res, next) => {
             });
             data['patientName'] = patientName;
             var checkRef_2 = firestore.collection('users');
-            await checkRef_2.where('uid', '==', data.doctorId).where('user_type', '==', 'doctor').get().then((querySnapshot) => {
+            await checkRef_2.where('uid', '==', data.doctorId).where('user_type', '==', 'doctor').where('hospitalId', '==', data.hospitalId).get().then(async (querySnapshot) => {
+                console.log(querySnapshot.size);
                 if (querySnapshot.size != 1) {
-                    res.status(409).json(response(409, "Doctor does not exists."));
+                    res.status(409).json(response(409, "Doctor or Hospital does not exists."));
                 } else {
-                    firestore.collection("appointment").doc(data.hospitalId).set({ hospitalId: data.hospitalId });
+                    var doctorName;
+                    var hospitalName;
+                    await querySnapshot.forEach(result => {
+                        doctorName = result.data().displayName;
+                        console.log(doctorName)
+                        hospitalName = result.data().hospitalName;
+                    });
+                    data['doctorName'] = doctorName;
+                    data['hospitalName'] = hospitalName; firestore.collection("appointment").doc(data.hospitalId).set({ hospitalId: data.hospitalId });
                     let appointmentRef = firestore.collection("appointment").doc(data.hospitalId);
                     appointmentRef.collection('data').add(data).then((result) => {
                         res.status(200).json(response(200, "Appointment Booked Succesfully"));
@@ -92,7 +101,7 @@ let postBookAppoinmentHandler = async (req, res, next) => {
                     });
                 }
             }).catch((error) => {
-                res.status(401).json(response(401, error));
+                res.status(401).json(response(401, error + ""));
             });
         }
     });
@@ -139,6 +148,30 @@ let getDoctor = (hospitalName) => {
     }));
 };
 
+let postCheckAppointmentStatusHandler = async (req, res, next) => {
+
+    var uid = req.params.patientId;
+    var status = req.params.status;
+    let ref_1 = firestore.collection('appointment');
+    await ref_1.get().then(async (hIdSnapshot) => {
+        let sendData = [];
+        let data = hIdSnapshot.docs;
+        for (let i of data) {
+            let hId = i.data()['hospitalId'];
+            let ref_2 = firestore.collection('appointment').doc(hId).collection('data');
+            await ref_2.where('patientId', '==', uid).where('status', '==', status).orderBy('date', 'asc').get().then(async (valueSnapshot) => {
+                await valueSnapshot.forEach(result => {
+                    sendData.push(result.data());
+                });
+            });
+        }
+        res.status(200).send(sendData);
+    }).catch((error) => {
+        res.status(401).json(response(401, error + ""));
+    });
+};
+
 module.exports.postCheckHistoryHandler = postCheckHistoryHandler;
 module.exports.postBookAppoinmentHandler = postBookAppoinmentHandler;
 module.exports.postShowAvailableDoctorHandler = postShowAvailableDoctorHandler;
+module.exports.postCheckAppointmentStatusHandler = postCheckAppointmentStatusHandler;
