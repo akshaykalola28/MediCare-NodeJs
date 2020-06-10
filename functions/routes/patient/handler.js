@@ -111,17 +111,10 @@ let postShowAvailableDoctorHandler = async (req, res, next) => {
 
     const sendData = [];
     let ref = firestore.collection('users');
-    await ref.where('user_type', '==', 'hospital').get().then(async value => {
+    await ref.where('user_type', '==', 'doctor').get().then(async value => {
         let data = value.docs;
         for (let i of data) {
-            let getData = {};
-            await getDoctor(i.data()['displayName']).then((getResult) => {
-                getData['hospitalName'] = i.data()['displayName'];
-                getData['doctor'] = getResult;
-                sendData.push(getData);
-            }).catch(error => {
-                res.status(401).json(response(401, error + ""));
-            });
+            sendData.push(i.data())
         }
         res.status(200).send(sendData);
     }).catch((error) => {
