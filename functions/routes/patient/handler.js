@@ -164,7 +164,71 @@ let postCheckAppointmentStatusHandler = async (req, res, next) => {
     });
 };
 
+let postAddPastMedicinesRecordsHandler = (req, res, next) => {
+
+    var data = req.body;
+    var setDate = dateFormat(data['date'], "yyyymmddHHMMss");
+    var uid = data['patientId'];
+    data['treatmentId'] = setDate;
+    var checkRef = firestore.collection('users'); //For checking that patient exists or not.
+    checkRef.where('uid', '==', uid).where('user_type', '==', "patient").get().then(async (snapshot) => {
+        if (snapshot.size != 1) {
+            res.status(409).json(response(409, "Patient does not exists."));
+        }
+        else {
+            var patientName;
+            await snapshot.forEach(doc => {
+                patientName = doc.data().displayName;
+            });
+            data['patientName'] = patientName;
+            firestore.collection("medicines").doc(uid).set({ patientId: uid });
+            let medicinesRef = firestore.collection("medicines").doc(uid);
+            medicinesRef.collection('data').doc(setDate).set(data).then((result) => {
+                res.status(200).json(response(200, "Added Succesfully"));
+            }).catch((error) => {
+                console.log(error);
+                res.status(401).json(response(401, error + ""));
+            });
+        }
+    }).catch((error) => {
+        res.status(401).json(response(401, error + ""));
+    });
+};
+
+let postAddPastReportsRecordsHandler = (req, res, next) => {
+
+    var data = req.body;
+    var setDate = dateFormat(data['date'], "yyyymmddHHMMss");
+    var uid = data['patientId'];
+    data['reportId'] = setDate;
+    var checkRef = firestore.collection('users'); //For checking that patient exists or not.
+    checkRef.where('uid', '==', uid).where('user_type', '==', "patient").get().then(async (snapshot) => {
+        if (snapshot.size != 1) {
+            res.status(409).json(response(409, "Patient does not exists."));
+        }
+        else {
+            var patientName;
+            await snapshot.forEach(doc => {
+                patientName = doc.data().displayName;
+            });
+            data['patientName'] = patientName;
+            firestore.collection("reports").doc(uid).set({ patientId: uid });
+            let medicinesRef = firestore.collection("reports").doc(uid);
+            medicinesRef.collection('data').doc(setDate).set(data).then((result) => {
+                res.status(200).json(response(200, "Added Succesfully"));
+            }).catch((error) => {
+                console.log(error);
+                res.status(401).json(response(401, error + ""));
+            });
+        }
+    }).catch((error) => {
+        res.status(401).json(response(401, error + ""));
+    });
+};
+
 module.exports.postCheckHistoryHandler = postCheckHistoryHandler;
 module.exports.postBookAppoinmentHandler = postBookAppoinmentHandler;
 module.exports.postShowAvailableDoctorHandler = postShowAvailableDoctorHandler;
 module.exports.postCheckAppointmentStatusHandler = postCheckAppointmentStatusHandler;
+module.exports.postAddPastMedicinesRecordsHandler = postAddPastMedicinesRecordsHandler;
+module.exports.postAddPastReportsRecordsHandler = postAddPastReportsRecordsHandler;
