@@ -50,3 +50,16 @@
     "Acthrel": 20,
     "Actimmune": 30
 }
+
+//AddPastReportsRecords
+{
+	"patientId": "iiCidiR1hXOw3YgrJcDWvhIbknh2",
+	"reportTitle": "Diabetic",
+	"laboratoryEmail": "laboratory1@medicare.com",
+	"doctorId": "IGw2dIUrAENGs5q47JYIly1Y8E43",
+	"doctorName": "Doctor 1",
+	"collectingStatus": "done",
+	"date": "4/27/2020, 6:20:44 PM",
+	"reportDescription": "Diabetic Reports",
+	"reportLink": "sdkjfkjdhgkjhfjjfasjf"
+}
